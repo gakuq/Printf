@@ -6,55 +6,62 @@
 /*   By: mmaterna <mmaterna@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 01:05:15 by mmaterna          #+#    #+#             */
-/*   Updated: 2025/01/18 05:57:14 by mmaterna         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:29:42 by mmaterna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <unistd.h>
+#include "ft_printf.h"
 
-// Funkcja pomocnicza do wypisywania pojedynczego znaku
-int ft_putchar(char c) {
-    return write(1, &c, 1);
-}
-
-// Funkcja pomocnicza do wypisywania ciągu znaków
-int ft_putstr(const char *str) {
-    int count = 0;
-
-    if (!str)
-        str = "(null)";
-    
-    while (*str) {
-        count += ft_putchar(*str);
-        str++;
-    }
-    return count;
-}
-
-// Funkcja pomocnicza do wypisywania liczby szesnastkowej (hexadecimal)
-int ft_puthex(unsigned long num) {
-    int count = 0;
-    char *hex_digits = "0123456789abcdef";
-
-    if (num / 16)
-        count += ft_puthex(num / 16);
-    
-    count += ft_putchar(hex_digits[num % 16]);
-    return count;
-}
-
-// Wyodrębniona funkcja ft_printptr
-int ft_printptr(va_list args, int i)
+int	ft_puthex(unsigned long num)
 {
-    void *ptr = va_arg(args, void *); // Pobranie wskaźnika z va_list
+	int		count;
+	char	*hex_digits;
 
-    if (!ptr) {
-        i += ft_putstr("(nil)"); // Obsługa wskaźnika NULL
-    } else {
-        i += ft_putstr("0x");   // Prefiks dla adresu
-        i += ft_puthex((unsigned long)ptr); // Adres w szesnastkowym formacie
-    }
+	count = 0;
+	hex_digits = "0123456789abcdef";
+	if (num / 16)
+		count += ft_puthex(num / 16);
+	count += ft_putchar(hex_digits[num % 16]);
+	return (count);
+}
 
-    return i;
+int	ft_hex(size_t x, char spec, int i)
+{
+	unsigned int	u;
+
+	u = (unsigned int)x;
+	if (u == 0)
+		i = ft_write('0', i);
+	else if (u >= 16)
+	{
+		i = ft_hex(u / 16, spec, i);
+		i = ft_hex(u % 16, spec, i);
+	}
+	else
+	{
+		if (u <= 9)
+			i = ft_write(u + '0', i);
+		else if (spec == 'x')
+			i = ft_write(u + 'a' - 10, i);
+		else
+			i = ft_write(u + 'A' - 10, i);
+	}
+	return (i);
+}
+
+int	ft_printptr(va_list args, int i)
+{
+	void	*ptr;
+
+	ptr = va_arg(args, void *);
+	if (!ptr)
+	{
+		i += ft_putstr("(nil)");
+	}
+	else
+	{
+		i += ft_putstr("0x");
+		i += ft_puthex((unsigned long)ptr);
+	}
+	return (i);
 }

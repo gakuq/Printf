@@ -6,7 +6,7 @@
 /*   By: mmaterna <mmaterna@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:10:57 by mmaterna          #+#    #+#             */
-/*   Updated: 2025/01/18 05:57:13 by mmaterna         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:29:19 by mmaterna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,15 @@ int	ft_printchar(int c)
 
 int	ft_printstr(char *s, int i)
 {
-    if (!s)
-        s = "(null)";
-    while (*s)
-    {
-        write(1, s, 1);
-        i++;
-        s++;
-    }
-    return (i);
-}
-
-int ft_write(int c, int i)
-{
-	i++;
-	write(1, &c, 1);
-	return(i);
+	if (!s)
+		s = "(null)";
+	while (*s)
+	{
+		write(1, s, 1);
+		i++;
+		s++;
+	}
+	return (i);
 }
 
 int	ft_printdecimal(int d, int i)
@@ -58,46 +51,7 @@ int	ft_printdecimal(int d, int i)
 		i = ft_printdecimal(d / 10, i);
 		i = ft_write(d % 10 + '0', i);
 	}
-	return(i);
-}
-
-int ft_uint(unsigned int u, int i)
-{
-	if (u / 10)
-		i = ft_uint(u / 10, i);
-	i = ft_write((u % 10) + '0', i);
 	return (i);
-}
-
-int	ft_hex(size_t x, char spec, int i)
-{
-	unsigned int	u;
-
-	u = (unsigned int)x;
-	if (u == 0)
-		i = ft_write('0', i);
-	else if (u >= 16)
-	{
-		i = ft_hex(u / 16, spec, i);
-		i = ft_hex(u % 16, spec, i);
-	}
-	else
-	{
-		if (u <= 9)
-			i = ft_write(u + '0', i);
-		else if (spec == 'x')
-			i = ft_write(u + 'a' - 10, i);
-		else
-			i = ft_write(u + 'A' - 10, i);
-
-	}
-	return (i);
-}
-
-int	ft_printperc(void)
-{
-	ft_write('%', 1);
-	return (1); 
 }
 
 int	ft_formats(const char *format, va_list args, int i, int j)
@@ -125,7 +79,7 @@ int	ft_formats(const char *format, va_list args, int i, int j)
 
 int	ft_printf(const char *format, ...)
 {
-	va_list args;
+	va_list	args;
 	int		i;
 	int		j;
 
@@ -146,18 +100,3 @@ int	ft_printf(const char *format, ...)
 	va_end(args);
 	return (i);
 }
-
-// int	main(void)
-// {
-// 	int i;
-// 	int x;
-// 	int *ptr = &x;
-
-// 	i = ft_printf("Hello 42! c: %c, s: %s, p: %p, d: %d, i: %i, u: %u, x: %x, X: %X, %%\n", '0', "Hello", ptr, 4242, 4242, -4242, 4242, 4242);
-// 	printf("i: %i\n\n", i);
-
-// 	i = printf("Hello 42! c: %c, s: %s, p: %p, d: %d, i: %i, u: %u, x: %x, X: %X, %%\n", '0', "Hello", ptr, 4242, 4242, -4242, 4242, 4242);
-// 	printf("i: %i\n\n", i);
-
-// 	return (0);
-// }
