@@ -1,10 +1,5 @@
 
----
-
-### 📁 `ft_printf`
-
-```markdown
-# ft_printf
+# ✏️ `ft_printf`
 
 A reimplementation of the standard `printf` function in C, capable of formatting and printing various data types to standard output.
 
@@ -19,6 +14,6 @@ A reimplementation of the standard `printf` function in C, capable of formatting
 ## Usage
 ```bash
 make
-
-Goal
+```
+## Goal
 To understand variadic functions, formatted output, and build a robust function replicating real-world standard behavior.
